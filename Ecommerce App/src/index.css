@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import 'react-toastify/dist/ReactToastify.css';
+* {
+    font-family: poppins, sans-serif;
+}
+a.active hr {
+    display: block;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.animate-fadeIn {
+    animation: fadeIn 1s ease-in-out;
+}
+@media (max-width:680px) {
+    a.active {
+        background-color: #334155;
+        color:oklch(96.8% 0.007 247.896);
+    }
+}
