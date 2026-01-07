@@ -102,7 +102,7 @@ const Add = ({ token }) => {
       {loading && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg flex items-center gap-3">
-            <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-6 h-6 border-2 border-slate-600 border-t-transparent rounded-full animate-spin"></div>
             <p className="text-slate-700 font-medium">Uploading product...</p>
           </div>
         </div>
@@ -154,7 +154,7 @@ const Add = ({ token }) => {
           <input
             onChange={(e) => setName(e.target.value)}
             value={name}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 outline-none transition-all"
             type="text"
             placeholder="Enter product name"
             required
@@ -169,7 +169,7 @@ const Add = ({ token }) => {
           <textarea
             onChange={(e) => setDescription(e.target.value)}
             value={description}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 outline-none transition-all resize-none"
             rows="4"
             placeholder="Write detailed product description..."
             required
@@ -186,7 +186,7 @@ const Add = ({ token }) => {
             <input
               onChange={(e) => setCategory(e.target.value)}
               value={Category}
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 outline-none transition-all"
               type="text"
               placeholder="e.g., Rolex"
               required
@@ -201,7 +201,7 @@ const Add = ({ token }) => {
             <input
               onChange={(e) => setSubCategory(e.target.value)}
               value={subCategory}
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 outline-none transition-all"
               type="text"
               placeholder="e.g., Men, Women"
               required
@@ -216,7 +216,7 @@ const Add = ({ token }) => {
             <input
               onChange={(e) => setPrice(e.target.value)}
               value={price}
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 outline-none transition-all"
               type="number"
               min="0"
               step="0.01"
@@ -233,7 +233,7 @@ const Add = ({ token }) => {
                 id="bestseller"
                 checked={bestseller}
                 onChange={(e) => setBestseller(e.target.checked)}
-                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                className="w-5 h-5 text-slate-600 rounded focus:ring-slate-500"
               />
               <label htmlFor="bestseller" className="ml-3 text-sm font-medium text-slate-700 cursor-pointer">
                 Mark as Best Seller
@@ -268,7 +268,7 @@ const Add = ({ token }) => {
                 )}
                 className={`flex flex-col items-center p-2 rounded-lg transition-all duration-200 ${
                   colors.includes(colorItem.name)
-                    ? 'bg-blue-50 ring-2 ring-blue-500'
+                    ? 'bg-blue-50 ring-2 ring-slate-500'
                     : 'bg-slate-50 hover:bg-slate-100'
                 }`}
               >
@@ -294,7 +294,7 @@ const Add = ({ token }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-3 bg-slate-600 text-white font-medium rounded-lg hover:bg-slate-700 focus:ring-4 focus:ring-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
