@@ -5,8 +5,6 @@ import { useState } from 'react'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 import { assets } from '../assets/assests.js'
-import Title from '../../../Ecommerce App/src/components/Title.jsx'
-
 const Orders = ({ token }) => {
 
   const [order, setOrders] = useState([])
