@@ -5,25 +5,21 @@ import { backendUrl } from '../App.jsx'
 import { toast } from 'react-toastify'
 
 const Add = ({ token }) => {
+  const [image1, setImage1] = useState(false)
+  const [image2, setImage2] = useState(false)
+  const [image3, setImage3] = useState(false)
+  const [image4, setImage4] = useState(false)
 
- const [image1 , setImage1] = useState(false)
- const [image2 , setImage2] = useState(false)
- const [image3 , setImage3] = useState(false)
- const [image4 , setImage4] = useState(false)
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [Category, setCategory] = useState('');
+  const [subCategory, setSubCategory] = useState('');
+  const [bestseller, setBestseller] = useState(false);
+  const [colors, setColors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-
- const [name, setName] = useState('');
- const [description, setDescription] = useState('');
- const [price, setPrice] = useState('');
- const [Category, setCategory] = useState('');
- const [subCategory, setSubCategory] = useState('');
- const [bestseller, setBestseller] = useState(false);
-
- const [colors , setColors] = useState([]);
- const [loading, setLoading] = useState(false);
-
-
- const OnSubmitHandler = async (e) => {
+  const OnSubmitHandler = async (e) => {
     e.preventDefault()
 
     // Validation
@@ -61,22 +57,20 @@ const Add = ({ token }) => {
 
       const formData = new FormData()
 
-      formData.append("name",name)
-      formData.append("description",description)
-      formData.append("price",price)
-      formData.append("category",Category)
-      formData.append("subCategory",subCategory)
-      formData.append("bestseller",bestseller)
+      formData.append("name", name)
+      formData.append("description", description)
+      formData.append("price", price)
+      formData.append("category", Category)
+      formData.append("subCategory", subCategory)
+      formData.append("bestseller", bestseller)
       formData.append("colors", JSON.stringify(colors))
 
+      image1 && formData.append('image1', image1)
+      image2 && formData.append('image2', image2)
+      image3 && formData.append('image3', image3)
+      image4 && formData.append('image4', image4)
 
-      image1 && formData.append('image1',image1)
-      image2 && formData.append('image2',image2)
-      image3 && formData.append('image3',image3)
-      image4 && formData.append('image4',image4)
-
-
-      const response =  await axios.post(backendUrl + "/api/product/add" ,formData,{headers:{token}})
+      const response = await axios.post(backendUrl + "/api/product/add", formData, { headers: { token } })
 
       if (response.data.success) {
         toast.success(response.data.message)
@@ -92,105 +86,233 @@ const Add = ({ token }) => {
         setBestseller(false)
         setColors([])
       } else {
-
         toast.error(response.data.message)
       }
 
     } catch (error) {
       console.error(error);
       toast.error(error.message)
-
     } finally {
       setLoading(false);
     }
- }
-
+  }
 
   return (
-    <>
-      {loading && <p>Loading...</p>}
-      <form onSubmit={OnSubmitHandler}>
-        <div className='flex flex-col w-full items-start gap-3'>
-        <p className='mb-2'>Upload Image</p>
-        <div className='flex gap-2'>
-          <label htmlFor="image1">
-            <img className='w-20 h-20 object-cover cursor-pointer hover:shadow-md transition-all ease-out duration-150' src={!image1 ?  assets.imgArea : URL.createObjectURL(image1)} alt="" />
-            <input onChange={(e)=>setImage1(e.target.files[0])} type="file" id="image1" hidden />
-          </label>
-          <label htmlFor="image2">
-            <img className='w-20 h-20 object-cover cursor-pointer hover:shadow-md transition-all ease-out duration-150' src={!image2 ?  assets.imgArea : URL.createObjectURL(image2)} alt="" />
-            <input onChange={(e)=>setImage2(e.target.files[0])} type="file" id="image2" hidden />
-          </label>
-          <label htmlFor="image3">
-            <img className='w-20 h-20 object-cover cursor-pointer hover:shadow-md transition-all ease-out duration-150' src={!image3 ?  assets.imgArea : URL.createObjectURL(image3)} alt="" />
-            <input onChange={(e)=>setImage3(e.target.files[0])} type="file" id="image3" hidden />
-          </label>
-          <label htmlFor="image4">
-            <img className='w-20 h-20 object-cover cursor-pointer hover:shadow-md transition-all ease-out duration-150' src={!image4 ?  assets.imgArea : URL.createObjectURL(image4)} alt="" />
-            <input onChange={(e)=>setImage4(e.target.files[0])} type="file" id="image4" hidden />
-          </label>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {loading && (
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg flex items-center gap-3">
+            <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-slate-700 font-medium">Uploading product...</p>
+          </div>
         </div>
-      </div>
+      )}
+      
+      <form onSubmit={OnSubmitHandler} className="space-y-6">
+        
+        {/* Image Upload Section with Grid */}
+        <div className="space-y-3">
+          <p className="text-lg font-medium text-slate-700 mb-3">Upload Product Images</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((num) => {
+              const imageState = num === 1 ? image1 : num === 2 ? image2 : num === 3 ? image3 : image4;
+              const setImageState = num === 1 ? setImage1 : num === 2 ? setImage2 : num === 3 ? setImage3 : setImage4;
 
-      <div className='w-full'>
-        <p className='mt-2 mb-2'>Product Name</p>
-        <input onChange={(e)=>setName(e.target.value)} value={name} className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] px-3 py-2' type="text" placeholder='Type Here' required />
-      </div>
-
-      <div className='w-full'>
-        <p className='mt-2 mb-2'>Product Description</p>
-        <textarea onChange={(e)=>setDescription(e.target.value)} value={description} className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] px-3 py-2' type="text" placeholder='Write Content Here' required />
-      </div>
-
-      <div className='flex gap-4 flex-wrap items-center w-full'>
-
-        <div>
-          <p className='mb-2' >Category</p>
-          <input onChange={(e)=>setCategory(e.target.value)} value={Category} className='w-full px-3 py-2 sm:w-[100px] md:w-[120px] capitalize' type="text" placeholder='Rolex or Tissot....' />
+              return (
+                <label key={num} htmlFor={`image${num}`} className="block cursor-pointer group">
+                  <div className="relative aspect-square rounded-lg overflow-hidden border-2 border-dashed border-slate-300 hover:border-slate-400 transition-colors duration-200 bg-slate-50">
+                    <img
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                      src={!imageState ? assets.imgArea : URL.createObjectURL(imageState)}
+                      alt={`Product image ${num}`}
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200"></div>
+                    <div className="absolute top-2 right-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-sm">
+                      <span className="text-sm font-medium text-slate-700">{num}</span>
+                    </div>
+                  </div>
+                  <input
+                    onChange={(e) => setImageState(e.target.files[0])}
+                    type="file"
+                    id={`image${num}`}
+                    className="hidden"
+                    accept="image/*"
+                  />
+                  <p className="text-xs text-slate-500 mt-2 text-center">Image {num}</p>
+                </label>
+              );
+            })}
+          </div>
+          <p className="text-sm text-slate-500">Upload at least one image (max 4 images)</p>
         </div>
 
-        <div>
-          <p className='mb-2'>SubCategory</p>
-          <input onChange={(e)=>setSubCategory(e.target.value)} value={subCategory} className='w-full px-3 py-2 sm:w-[100px] md:w-[120px] capitalize' type="text" placeholder='Men,Women....' />
+        {/* Product Name */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-slate-700">
+            Product Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+            type="text"
+            placeholder="Enter product name"
+            required
+          />
         </div>
 
-
-        <div className=''>
-          <p className='mb-2 mt-2 '>Product Price</p>
-          <input onChange={(e)=>setPrice(e.target.value)} value={price} className='w-1/2 px-3 py-2 sm:w-[100px] md:w-[120px] ' type="Number" placeholder='25' />
+        {/* Product Description */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-slate-700">
+            Product Description <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
+            rows="4"
+            placeholder="Write detailed product description..."
+            required
+          />
         </div>
-      </div>
 
-      <div>
-        <p className='my-2'>Product Colors</p>
-        <div className='flex gap-2 sm:gap-3'>
-          {['Red', 'Blue', 'Green', 'Yellow', 'Black','white','Transparent'].map((colorName) => (
-            <div key={colorName} className='flex flex-col items-center'>
-              <button
-                type="button"
-                onClick={() => setColors(prev => prev.includes(colorName) ? prev.filter(item => item !== colorName) : [...prev, colorName])}
-                className={`w-8 h-8 rounded-full border-2 cursor-pointer transition-all ease-in-out  ${
-                  colors.includes(colorName) ? 'border-slate-500' : 'border-gray-300'
-                }`}
-                style={{ backgroundColor: colorName.toLowerCase() }}
-              ></button>
-              {colors.includes(colorName) && <div className='w-2 h-2 bg-slate-500 rounded-full mt-1'></div>}
+        {/* Category & Price Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Category */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-slate-700">
+              Category <span className="text-red-500">*</span>
+            </label>
+            <input
+              onChange={(e) => setCategory(e.target.value)}
+              value={Category}
+              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              type="text"
+              placeholder="e.g., Rolex"
+              required
+            />
+          </div>
+
+          {/* Sub Category */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-slate-700">
+              Sub Category <span className="text-red-500">*</span>
+            </label>
+            <input
+              onChange={(e) => setSubCategory(e.target.value)}
+              value={subCategory}
+              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              type="text"
+              placeholder="e.g., Men, Women"
+              required
+            />
+          </div>
+
+          {/* Price */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-slate-700">
+              Price ($) <span className="text-red-500">*</span>
+            </label>
+            <input
+              onChange={(e) => setPrice(e.target.value)}
+              value={price}
+              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              required
+            />
+          </div>
+
+          {/* Best Seller Checkbox */}
+          <div className="space-y-2 flex items-end">
+            <div className="flex items-center h-12">
+              <input
+                type="checkbox"
+                id="bestseller"
+                checked={bestseller}
+                onChange={(e) => setBestseller(e.target.checked)}
+                className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+              />
+              <label htmlFor="bestseller" className="ml-3 text-sm font-medium text-slate-700 cursor-pointer">
+                Mark as Best Seller
+              </label>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
 
+        {/* Colors Selection */}
+        <div className="space-y-3">
+          <label className="block text-sm font-medium text-slate-700">
+            Available Colors <span className="text-red-500">*</span>
+            <span className="block text-xs text-slate-500 font-normal mt-1">Select at least one color</span>
+          </label>
+          <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
+            {[
+              { name: 'Red', color: '#ef4444' },
+              { name: 'Blue', color: '#3b82f6' },
+              { name: 'Green', color: '#10b981' },
+              { name: 'Yellow', color: '#f59e0b' },
+              { name: 'Black', color: '#000000' },
+              { name: 'White', color: '#ffffff', border: true },
+              { name: 'Transparent', color: 'transparent', border: true }
+            ].map((colorItem) => (
+              <button
+                key={colorItem.name}
+                type="button"
+                onClick={() => setColors(prev =>
+                  prev.includes(colorItem.name)
+                    ? prev.filter(item => item !== colorItem.name)
+                    : [...prev, colorItem.name]
+                )}
+                className={`flex flex-col items-center p-2 rounded-lg transition-all duration-200 ${
+                  colors.includes(colorItem.name)
+                    ? 'bg-blue-50 ring-2 ring-blue-500'
+                    : 'bg-slate-50 hover:bg-slate-100'
+                }`}
+              >
+                <div
+                  className={`w-10 h-10 rounded-full ${colorItem.border ? 'border-2 border-slate-300' : ''}`}
+                  style={{ backgroundColor: colorItem.color }}
+                ></div>
+                <span className="text-xs mt-2 font-medium text-slate-700">{colorItem.name}</span>
+                {colors.includes(colorItem.name) && (
+                  <div className="mt-1">
+                    <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
 
-      <div className='flex gap-2 mt-4'>
-        <input type="checkbox" id="bestseller" checked={bestseller} onChange={(e) => setBestseller(e.target.checked)} />
-        <label className='cursor-pointer' htmlFor="bestseller"> Add to bestseller</label>
-      </div>
-
-
-
-      <button className='w-28 py-3 mt-4 bg-slate-800 text-slate-50 cursor-pointer' type="submit" disabled={loading}>ADD</button>
-    </form>
-    </>
+        {/* Submit Button */}
+        <div className="pt-4">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full sm:w-auto px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Adding Product...</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span>Add Product</span>
+              </>
+            )}
+          </button>
+        </div>
+      </form>
+    </div>
   )
 }
 
