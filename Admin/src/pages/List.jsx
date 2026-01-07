@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { backendUrl, currency } from '../App.jsx'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-
+import Title from '../components/Title.jsx';
 const List = ({token}) => {
 
   const [list,setList] = useState([]) 
@@ -47,7 +47,7 @@ const List = ({token}) => {
 
   return (
     <>
-      <p className='mb-2'>All Products List</p>
+      <Title text1={'PRODUCT'} text2={'LIST'}/>
       <div className='flex flex-col gap-2 '>
 
         <div className='hidden md:grid grid-cols-[1fr_3fr_1fr_1fr_1fr] items-center py-1 px-2 border bg-gray-100 text-sm'>

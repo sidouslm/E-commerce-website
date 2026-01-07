@@ -4,6 +4,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
+import Title from '../components/Title.jsx';
 import { assets } from '../assets/assests.js'
 const Orders = ({ token }) => {
 
